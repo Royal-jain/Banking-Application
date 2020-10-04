@@ -65,16 +65,16 @@ public class AccountService {
 		// TODO Auto-generated method stub
 		StringBuilder sb=new StringBuilder();
 		List<String> errorList=new ArrayList<String>();
-		System.out.println("inside validateBasicDetails");
+		System.out.println("inside validateBasicDetails:: "+accDetails.getAccountNumber()+" name:: "+accDetails.getName()+" adhar:: "+accDetails.getAdharNumber());
 		if(null == accDetails.getName() || "".equalsIgnoreCase(accDetails.getName()))
 			errorList.add("Name");
+		if(null == accDetails.getAccountType() || "".equalsIgnoreCase(accDetails.getAccountType()))
+			errorList.add("Account Type");
+		
 		switch(operation){
 		case 1://createAccounts
 			if(null == accDetails.getAdharNumber()  || 12 != accDetails.getAdharNumber().toString().length())
-				errorList.add("Valid Adhar Number"); 
-			if(null == accDetails.getAccountType() || "".equalsIgnoreCase(accDetails.getAccountType()))
-				errorList.add("Account Type");
-			System.out.println("leangth:: "+accDetails.getAccountNumber());
+				errorList.add("Valid Adhar Number"); 	
 			break;
 		case 2 & 3://cashDeposits	//cashWithdrawals		
 			if(null == accDetails.getAdharNumber()  || 12 != accDetails.getAdharNumber().toString().length())
