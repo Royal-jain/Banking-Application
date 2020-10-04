@@ -1,0 +1,39 @@
+
+sample with only mandatory parameters. i did not mention optional parameters here like adress details at the time of account creation 
+
+/createAccounts
+{
+    "name": "Royal jain",
+    "adharNumber": "987698769876",
+    "accountType": "savings"
+}
+
+/cashDeposits
+{
+    "name": "Royal jain",
+    "accountNumber": 59169695987687300000,
+    "adharNumber": "987698769876",
+    "ammount":3.8789,
+    "accountType": "savings"
+}
+
+/cashWithdrawals
+{
+    "name": "Royal jain",
+    "accountNumber": 59169695987687300000,
+    "adharNumber": "987698769876", 
+    "ammount":3.8789,
+    "accountType": "savings"
+}
+
+/balanceEnquiry
+{
+    "name": "Royal jain",
+    "accountNumber": 59169695987687300000,
+    "accountType": "savings"
+}
+
+Validations: 
+	"adharNumber" shoud be 12 digit
+	"accountNumber" should not be less than 20 digit 
+ 
