@@ -29,4 +29,4 @@ The app will start running at http://localhost:8080/.
 **For balance inquiry**
 * GET /Bank/myBank/cashWithdrawals
 
-You can test them using postman or any other rest client.
+You can test them using postman or any other rest client and please find there respective sample request at https://github.com/Royal-jain/Banking-Application/blob/master/Sample.txt.
