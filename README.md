@@ -11,9 +11,9 @@
 2. Create table and sequnce 
 3. Build app using maven run whith Apache Tomcat 7.0.x
 
+**Refer snaps for folder structure and test cases plased at https://github.com/Royal-jain/Banking-Application/blob/master/snap.rtf**
 
 The app will start running at http://localhost:8080/.
-
 
 **Explore Rest APIs:**
 
