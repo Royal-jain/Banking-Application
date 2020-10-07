@@ -11,9 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import javax.sql.DataSource;
-
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,7 +50,7 @@ public class DaoImpl implements Dao{
 					+ "ACC_NUMBER , ADHAR_ID, MOBILE_NUMBER, ACC_TYPE,AVL_BALANCE, "
 					+ " ADRESS,CITY,PIN_CODE, EMAIL_ID, LAST_TRAN_DATE , CREATED_DATE,"
 					+ " UPDATED_DATE ) VALUES (ACCOUNT_DETAILS_SEQ.NEXTVAL, ?,?,?,"
-					+ ""+accDetails.getMobileNumber()+",?,"+accDetails.getAmmount()+","+accDetails.getAdressPermanent()+""
+					+ ""+accDetails.getMobileNumber()+",?,?,"+accDetails.getAdressPermanent()+""
 					+ ","+accDetails.getCity()+","+accDetails.getZipCode()+","
 					+ ""+accDetails.geteMail()+",sysdate,sysdate,sysdate)");
 			q.setParameter(0, accDetails.getName());
@@ -61,6 +58,7 @@ public class DaoImpl implements Dao{
 			q.setLong(2, accDetails.getAdharNumber());
 			//q.setBigInteger(3, (BigInteger) ((null !=accDetails.getMobileNumber())?accDetails.getMobileNumber(): BigInteger.ZERO));
 			q.setParameter(3, accDetails.getAccountType());
+			q.setParameter(4, null != accDetails.getAmmount()?accDetails.getAmmount():new BigDecimal("0"));
 			
 			isCreated=q.executeUpdate();
 			System.out.println("isCreated:: "+isCreated);
@@ -110,7 +108,7 @@ public class DaoImpl implements Dao{
 			q1.setLong(1, accDetails.getAdharNumber());
 			q1.setParameter(2, accDetails.getAccountType());
 			List list=q1.list(); 
-			System.out.println(list.size()); 
+			System.out.println(list.size()+" query:: "+q1); 
 			if(!list.isEmpty()) {
 				BigDecimal availableAmmount=(BigDecimal) list.get(0); 
 				if(availableAmmount.compareTo(accDetails.getAmmount())>0) {
@@ -124,7 +122,7 @@ public class DaoImpl implements Dao{
 					if(isWithdrowal>0) {
 						response.setAvailableBalance(currentBalance);
 						response.setErrorStatus("0");
-						response.setMessage("Your Balance is added succsessfully.");
+						response.setMessage("Ammount "+accDetails.getAmmount()+" is Whithdrowl");
 						return response;
 					}
 				}else {
@@ -150,7 +148,7 @@ public class DaoImpl implements Dao{
 
 		public Response cashDeposits(AccountDetails accDetails) {
 			boolean rs=false;
-			//Transaction transaction = null;
+			Transaction transaction = null;
 			Session session = null;
 			int isUpadated = 0;
 			try {
@@ -158,15 +156,15 @@ public class DaoImpl implements Dao{
 				response.setAccountNumber(String.valueOf(accDetails.getAccountNumber()));
 				response.setTransactionId(accDetails.getTransactionId());
 				session=factory.openSession();
-				//transaction=session.beginTransaction();
-				System.out.println("accDetails.getAmount():: "+accDetails.getAmmount());
+				transaction=session.beginTransaction();
+				
 				Query q=session.createSQLQuery("update ACCOUNT_DETAILS set AVL_BALANCE=AVL_BALANCE+?, LAST_TRAN_DATE=UPDATED_DATE, UPDATED_DATE=SYSDATE where ACC_NUMBER =? and ADHAR_ID=?");
 				q.setBigDecimal(0, accDetails.getAmmount());
 				q.setBigInteger(1, accDetails.getAccountNumber());
 				q.setLong(2, accDetails.getAdharNumber());
 				isUpadated=q.executeUpdate();
-				//transaction.commit();
-				System.out.println("isUpadated1:: "+isUpadated+"  q::: "+q);
+				transaction.commit();
+				System.out.println("isUpadated:: "+isUpadated+"  q::: "+q);
 				if(isUpadated ==1) {
 					response.setErrorStatus("0");
 					response.setMessage("Your Balance is added succsessfully.");
@@ -190,11 +188,10 @@ public class DaoImpl implements Dao{
 			// TODO Auto-generated method stub}
 		}
 
-
 		public Response balanceEnquiry(AccountDetails accDetails) {
 			//Transaction transaction = null;
 			Session session = null;
-			List list=new ArrayList();
+			//List list=new ArrayList();
 			try {
 				response.setName(accDetails.getName());
 				response.setTransactionId(accDetails.getTransactionId());
@@ -204,13 +201,13 @@ public class DaoImpl implements Dao{
 				q1.setBigInteger(0, accDetails.getAccountNumber());
 				//q1.setLong(1, accDetails.getAdharNumber());
 				q1.setParameter(1, accDetails.getAccountType());
-				list=q1.list(); 
+				List list=q1.list(); 
 				System.out.println(list.size()); 
 				if(!list.isEmpty()) {
 					BigDecimal availableAmmount=(BigDecimal) list.get(0);
 					response.setAvailableBalance(availableAmmount);
 					response.setErrorStatus("0");
-					//response.setMessage("");
+					response.setMessage("Sucess");
 					return response;
 
 				}else {

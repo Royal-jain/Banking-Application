@@ -65,7 +65,6 @@ public class AccountService {
 		// TODO Auto-generated method stub
 		StringBuilder sb=new StringBuilder();
 		List<String> errorList=new ArrayList<String>();
-		System.out.println("inside validateBasicDetails:: "+accDetails.getAccountNumber()+" name:: "+accDetails.getName()+" adhar:: "+accDetails.getAdharNumber());
 		if(null == accDetails.getName() || "".equalsIgnoreCase(accDetails.getName()))
 			errorList.add("Name");
 		if(null == accDetails.getAccountType() || "".equalsIgnoreCase(accDetails.getAccountType()))
@@ -105,7 +104,7 @@ public class AccountService {
 			response.setErrorMessage(sb.append(".").toString());
 			response.setErrorStatus("1");
 			response.setTransactionId(accDetails.getTransactionId());
-		}
+		}else System.out.println("seccess all primary validations ");
 		
 		return response;
 

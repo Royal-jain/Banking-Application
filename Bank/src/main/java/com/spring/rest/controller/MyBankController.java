@@ -23,7 +23,6 @@ public class MyBankController {
 	public Response createAccounts(@RequestBody AccountDetails accDetails) {
 		Response resp=new Response();
 		resp=service.validateBasicDetails(accDetails, 1);
-		System.out.println("error1:: "+resp.getErrorMessage());
 		return ((null != resp.getErrorMessage() && !"".equalsIgnoreCase(resp.getErrorMessage()))
 				?resp:service.createAccounts(accDetails));
 		//return resp;
@@ -32,8 +31,7 @@ public class MyBankController {
 
 	@PutMapping("/cashDeposits") 
 	public Response cashDeposits(@RequestBody AccountDetails accDetails) { 
-		Response resp=service.validateBasicDetails(accDetails, 2);
-		System.out.println("error:: "+resp.getErrorMessage()); 
+		Response resp=service.validateBasicDetails(accDetails, 2); 
 		return (null !=resp.getErrorMessage() && !"".equalsIgnoreCase(resp.getErrorMessage()))
 				?resp:service.cashDeposits(accDetails); 
 	}
